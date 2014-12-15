@@ -9,14 +9,14 @@ on init
     export LD_LIBRARY_PATH .:/sbin
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
-    export EXTERNAL_STORAGE /sdcard-ext
+    export EXTERNAL_STORAGE /sdcard
 
     mkdir /boot
     mkdir /recovery
-    mkdir /sdcard-ext
     mkdir /system
     mkdir /data
     mkdir /cache
+    mkdir /datamedia
     mkdir /systemorig
     mount tmpfs tmpfs /tmp
 
