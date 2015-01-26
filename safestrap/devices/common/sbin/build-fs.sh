@@ -23,23 +23,13 @@ if [ "$SS_USE_DATAMEDIA" = "1" ]; then
 	DISABLE_JOURNAL="-O ^has_journal"
 fi
 
-# Ensure the system is the correct fs type after rom-slot creation
-if [ "$LOOP_DEV" = "-system" ]; then
-	mke2fs -t $SYSTEM_FSTYPE -m 0 $BLOCK_DIR/loop$LOOP_DEV
-	e2fsck -p -v $BLOCK_DIR/loop$LOOP_DEV
-	mount -t $SYSTEM_FSTYPE $BLOCK_DIR/loop$LOOP_DEV /system
+if [ "$USERDATA_FSTYPE" = "f2fs" ] && [ "$LOOP_DEV" = "-userdata" ]; then
+	mkfs.f2fs $BLOCK_DIR/loop$LOOP_DEV
+else
+	if [ "$LOOP_DEV" = "-userdata" ]; then
+		mke2fs $DISABLE_JOURNAL -T $USERDATA_FSTYPE $BLOCK_DIR/loop$LOOP_DEV
+	else
+		mke2fs $DISABLE_JOURNAL -T $SYSTEM_FSTYPE $BLOCK_DIR/loop$LOOP_DEV
+	fi
 fi
 
-#Same for userdata
-if [ "$LOOP_DEV" = "-userdata" ]; then
-	mke2fs -t $USERDATA_FSTYPE -m 0 $BLOCK_DIR/loop$LOOP_DEV
-	e2fsck -p -v $BLOCK_DIR/loop$LOOP_DEV
-	mount -t $USERDATA_FSTYPE $BLOCK_DIR/loop$LOOP_DEV /data
-fi
-
-#And finally for cache
-if [ "$LOOP_DEV" = "-cache" ]; then
-	mke2fs -t $USERDATA_FSTYPE -m 0 $BLOCK_DIR/loop$LOOP_DEV
-	e2fsck -p -v $BLOCK_DIR/loop$LOOP_DEV
-	mount -t $USERDATA_FSTYPE $BLOCK_DIR/loop$LOOP_DEV /cache
-fi
