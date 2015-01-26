@@ -23,8 +23,8 @@ if [ "$SS_USE_DATAMEDIA" = "1" ]; then
 	DISABLE_JOURNAL="-O ^has_journal"
 fi
 
-if [ "$USERDATA_FSTYPE" = "f2fs" ] && [ "$LOOP_DEV" = "-userdata" ]; then
-	mkfs.f2fs $BLOCK_DIR/loop$LOOP_DEV
+if [ "$USERDATA_FSTYPE" = "ext3" ] && [ "$LOOP_DEV" = "-userdata" ]; then
+	mkfs.ext3 $BLOCK_DIR/loop$LOOP_DEV
 else
 	if [ "$LOOP_DEV" = "-userdata" ]; then
 		mke2fs $DISABLE_JOURNAL -T $USERDATA_FSTYPE $BLOCK_DIR/loop$LOOP_DEV

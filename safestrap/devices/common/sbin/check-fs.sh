@@ -10,8 +10,8 @@ SS_CONFIG=/ss.config
 . /sbin/ss_function.sh
 readConfig
 
-if [ "$USERDATA_FSTYPE" = "f2fs" ] && [ "$LOOP_DEV" = "-userdata" ]; then
-	fsck.f2fs $BLOCK_DIR/loop$LOOP_DEV
+if [ "$USERDATA_FSTYPE" = "ext3" ] && [ "$LOOP_DEV" = "-userdata" ]; then
+	fsck.ext3 $BLOCK_DIR/loop$LOOP_DEV
 else
 	e2fsck -pfvy $BLOCK_DIR/loop$LOOP_DEV
 fi
